@@ -1,3 +1,4 @@
+import { array } from 'prop-types';
 import React from 'react';
 
 import classes from './Burger.css';
@@ -5,10 +6,14 @@ import BurgerIngredient from './BurgerIngredient/BurgerIngredient';
 
 const burger = (props) => {
 
-  const transformedIngredients = Object.keys(props.ingredients)
+  let transformedIngredients = Object.keys(props.ingredients)
     .map(key => [...Array(props.ingredients[key])]
       .map((_, i) => <BurgerIngredient key={key + i} type={key} />)
-    );
+    ).reduce((acc, el) => acc.concat(el), []);
+
+  if(transformedIngredients.length === 0) {
+    transformedIngredients = <p>Please start adding ingredients!</p>
+  }
 
   return (
     <div className={classes.burger}>
